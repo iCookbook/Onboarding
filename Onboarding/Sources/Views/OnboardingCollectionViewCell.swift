@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Resources
 
 final class OnboardingCollectionViewCell: UICollectionViewCell {
     
@@ -13,7 +14,7 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        label.font = Fonts.largeTitle()
         label.textAlignment = .center
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -72,8 +73,8 @@ final class OnboardingCollectionViewCell: UICollectionViewCell {
             subtitleLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -4),
             
             imageView.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: layoutMargins.top * 2),
-            imageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor, constant: layoutMargins.left),
-            imageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor, constant: -layoutMargins.right)
+            imageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
         ])
     }
 }

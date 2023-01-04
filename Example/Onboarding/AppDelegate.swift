@@ -15,19 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
         
-        let assembly = OnboardingAssembly.assemble()
-        let navController = UINavigationController(rootViewController: assembly.viewController)
-        navController.navigationBar.prefersLargeTitles = true
+        let context = OnboardingContext(moduleOutput: nil)
+        let assembly = OnboardingAssembly.assemble(with: context)
         
         // Resources.Fonts
         Fonts.registerFonts()
-        navController.navigationBar.largeTitleTextAttributes = [.font: Fonts.largeTitle()]
-        navController.navigationBar.titleTextAttributes = [.font: Fonts.headline()]
         
-        window.rootViewController = navController
+        window.rootViewController = assembly.viewController
         window.makeKeyAndVisible()
         self.window = window
         

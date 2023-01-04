@@ -22,12 +22,21 @@ final class OnboardingViewController: UIViewController {
         (title: Texts.Onboarding.title3, subtitle: Texts.Onboarding.description3, image: Images.Onboarding.image3),
     ]
     
+    /// Defines current page of collection view's cells.
+    private var currentPage = 0
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isPagingEnabled = true
         collectionView.backgroundColor = .clear
         collectionView.register(OnboardingCollectionViewCell.self, forCellWithReuseIdentifier: OnboardingCollectionViewCell.identifier)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -38,7 +47,7 @@ final class OnboardingViewController: UIViewController {
         pageControl.currentPageIndicatorTintColor = Colors.appColor
         pageControl.pageIndicatorTintColor = Colors.tertiaryLabel
         pageControl.layer.zPosition = 1
-        pageControl.isEnabled = false
+        pageControl.addTarget(self, action: #selector(pageControlDidSelect), for: .valueChanged)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
@@ -50,7 +59,7 @@ final class OnboardingViewController: UIViewController {
         button.setTitle(Texts.Onboarding.continue, for: .normal)
         button.layer.cornerRadius = 14
         button.layer.zPosition = 3
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = Fonts.errorTitle()
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -86,8 +95,19 @@ final class OnboardingViewController: UIViewController {
     // MARK: - Private Methods
     
     @objc private func continueButtonTapped() {
-        // TODO: Slide to the next item, if last - presenter.handleTappingOnContinueButton()
-        presenter.handleTappingOnContinueButton()
+        if currentPage == data.count - 1 {
+            presenter.handleTappingOnContinueButton()
+        } else {
+            currentPage += 1
+            let indexPath = IndexPath(item: currentPage, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+        pageControl.currentPage = Int(collectionView.contentOffset.x / collectionView.frame.width) + 1
+    }
+    
+    @objc private func pageControlDidSelect(_ sender: UIPageControl) {
+        let indexPath = IndexPath(item: sender.currentPage, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     private func setupView() {
@@ -98,10 +118,10 @@ final class OnboardingViewController: UIViewController {
         view.addSubview(continueButton)
         
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: view.layoutMargins.left),
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.layoutMargins.right),
+            collectionView.bottomAnchor.constraint(equalTo: separatorView.topAnchor),
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.bottomAnchor.constraint(equalTo: continueButton.topAnchor, constant: view.layoutMargins.bottom - 4),
@@ -122,7 +142,7 @@ final class OnboardingViewController: UIViewController {
 extension OnboardingViewController: OnboardingViewInput {
 }
 
-extension OnboardingViewController: UICollectionViewDataSource {
+extension OnboardingViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         data.count
@@ -135,5 +155,15 @@ extension OnboardingViewController: UICollectionViewDataSource {
         let item = data[indexPath.row]
         cell.configure(title: item.title, subtitle: item.subtitle, image: item.image)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let width = scrollView.frame.width
+        currentPage = Int(scrollView.contentOffset.x / width)
+        pageControl.currentPage = currentPage
     }
 }
