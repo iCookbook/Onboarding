@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Onboarding'
-  s.version          = '1.0.0'
+  s.version          = '1.1.0'
   s.summary          = 'Project\'s "Onboarding" module.'
   s.homepage         = 'https://github.com/htmlprogrammist/Onboarding'
   s.author           = { 'htmlprogrammist' => '60363270+htmlprogrammist@users.noreply.github.com' }
