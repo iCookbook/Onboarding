@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'Onboarding'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'Project\'s "Onboarding" module.'
   s.homepage         = 'https://github.com/htmlprogrammist/Onboarding'
   s.author           = { 'htmlprogrammist' => '60363270+htmlprogrammist@users.noreply.github.com' }
@@ -11,6 +11,10 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Onboarding/Sources/**/*.{swift}'
   s.test_spec 'Tests' do |test_spec|
-    test_spec.source_files = 'Logger/Tests/**/*.{swift}'
+    test_spec.source_files = 'Onboarding/Tests/**/*.{swift}'
   end
+  
+  s.dependency 'Resources'
+  s.dependency 'CommonUI'
+  s.dependency 'Persistence'
 end
