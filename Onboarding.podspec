@@ -3,8 +3,9 @@ Pod::Spec.new do |s|
   s.version          = '1.2.0'
   s.summary          = 'Project\'s "Onboarding" module.'
   s.homepage         = 'https://github.com/htmlprogrammist/Onboarding'
-  s.screenshots     = 'https://user-images.githubusercontent.com/60363270/210759369-b3be228f-ec45-419d-9770-900a27dad693.png',
-                      'https://user-images.githubusercontent.com/60363270/210759393-32d3f9f2-26bf-4ff1-ae5e-8f042857deaa.png'
+  s.screenshots     = 'https://user-images.githubusercontent.com/60363270/210895101-0d205d0b-a320-4c60-bec1-b1e8a4d41f20.jpeg',
+                      'https://user-images.githubusercontent.com/60363270/210895135-cbd57450-37ae-45cf-bbd1-e8387ec579d9.jpeg',
+                      'https://user-images.githubusercontent.com/60363270/210895147-6c1221b7-53e8-4d65-8f7c-d98769007dce.jpeg'
   s.author           = { 'htmlprogrammist' => '60363270+htmlprogrammist@users.noreply.github.com' }
   s.source           = { :git => 'https://github.com/iCookbook/Onboarding.git', :tag => s.version.to_s }
 
