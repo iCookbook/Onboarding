@@ -28,12 +28,16 @@ extension OnboardingPresenter: OnboardingModuleInput {
 }
 
 extension OnboardingPresenter: OnboardingViewOutput {
+    
+    /// Handles tapping on continue button from view.
     func handleTappingOnContinueButton() {
         interactor.setHasOnboardedTrue()
     }
 }
 
 extension OnboardingPresenter: OnboardingInteractorOutput {
+    
+    /// Tells module's output to close this module.
     func didSetHasOnboardedTrue() {
         moduleOutput?.onboardingModuleDidFinish()
     }

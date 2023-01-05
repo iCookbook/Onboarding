@@ -14,6 +14,7 @@ final class OnboardingInteractor {
 
 extension OnboardingInteractor: OnboardingInteractorInput {
     
+    /// Sets user as _onboarded_ in UserDefaults and messages about its' completing presenter.
     func setHasOnboardedTrue() {
         UserDefaults.hasOnboarded = true
         presenter?.didSetHasOnboardedTrue()
