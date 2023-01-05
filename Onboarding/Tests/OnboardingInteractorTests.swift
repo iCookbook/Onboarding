@@ -10,12 +10,25 @@ import XCTest
 
 class OnboardingInteractorTests: XCTestCase {
     
+    var presenter: SpyOnboardingPresenter!
+    /// SUT.
+    var interactor: OnboardingInteractor!
+    
     override func setUpWithError() throws {
+        interactor = OnboardingInteractor()
+        presenter = SpyOnboardingPresenter()
+        interactor.presenter = presenter
     }
     
     override func tearDownWithError() throws {
+        interactor = nil
+        presenter = nil
     }
     
-    func testExample() throws {
+    func testSettingHasOnboardedTrue() throws {
+        interactor.setHasOnboardedTrue()
+        
+        XCTAssertTrue(UserDefaults.hasOnboarded)
+        XCTAssertTrue(presenter.didSetHasOnboardedFlag)
     }
 }
